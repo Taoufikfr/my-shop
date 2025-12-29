@@ -1,8 +1,11 @@
 <div class="container">
   <header>
-    <h1>🛍️ Ma Boutique Angular</h1>
-  </header>
-
+  <div class="container header-content">
+    <a routerLink="/" style="text-decoration:none; color:inherit;"><h1>🛍️ Ma Boutique</h1></a>
+    <button class="cart-btn">🛒 Panier (0)</button>
+  </div>
+</header>
+<router-outlet></router-outlet>
   <div class="product-grid">
     @for (product of products; track product.id) {
       <div class="card">
@@ -12,7 +15,7 @@
         <div class="card-body">
           <h3>{{ product.title }}</h3>
           <p class="price">{{ product.price }} €</p>
-          <button class="btn">Ajouter au panier</button>
+          <button class="btn" (click)="addToCart(product)">Ajouter au panier</button>
         </div>
       </div>
     }
