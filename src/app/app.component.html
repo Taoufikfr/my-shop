@@ -1,0 +1,20 @@
+<div class="container">
+  <header>
+    <h1>🛍️ Ma Boutique Angular</h1>
+  </header>
+
+  <div class="product-grid">
+    @for (product of products; track product.id) {
+      <div class="card">
+        <div class="image-container">
+          <img [src]="product.image" [alt]="product.title">
+        </div>
+        <div class="card-body">
+          <h3>{{ product.title }}</h3>
+          <p class="price">{{ product.price }} €</p>
+          <button class="btn">Ajouter au panier</button>
+        </div>
+      </div>
+    }
+  </div>
+</div>
