@@ -1,45 +1,42 @@
+// src/app/cart.service.ts
 import { Injectable } from '@angular/core';
 import { Product } from './product.model';
-import { BehaviorSubject } from 'rxjs'; // Useful for updating the cart count automatically
+import { BehaviorSubject } from 'rxjs'; // Optional: Use if you want to update header count automatically
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  // 1. The list of items
   private items: Product[] = [];
 
-  // 2. A "Subject" to notify other components (like the Header) when the cart changes
-  private cartCount = new BehaviorSubject<number>(0);
-  cartCount$ = this.cartCount.asObservable(); // Components subscribe to this
-
-  // Add a product to the list
+  // 1. Add item
   addToCart(product: Product) {
     this.items.push(product);
-    this.cartCount.next(this.items.length); // Update the counter
-    console.log('Cart updated:', this.items);
   }
 
-  // Get all items (for the Cart Page)
+  // 2. Get items
   getItems() {
     return this.items;
   }
 
-  // Remove an item (Optional: by index)
+  // 3. Remove item (NEW)
+  // We use the 'index' to know exactly which item to remove (in case you have 2 of the same item)
   removeItem(index: number) {
-    this.items.splice(index, 1);
-    this.cartCount.next(this.items.length);
+    if (index > -1 && index < this.items.length) {
+      this.items.splice(index, 1);
+    }
   }
 
-  // Calculate total price
+  // 4. Get Total Price (NEW)
   getTotalPrice(): number {
+    // reduce loops through all items and adds up the price
     return this.items.reduce((total, item) => total + item.price, 0);
   }
 
+  // 5. Clear Cart
   clearCart() {
     this.items = [];
-    this.cartCount.next(0);
     return this.items;
   }
 }

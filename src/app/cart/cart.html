@@ -1,28 +1,28 @@
 <div class="cart-container">
-  <h2>Your Shopping Cart 🛒</h2>
+  <h2>Your Shopping Cart</h2>
 
-  <div *ngIf="items.length === 0" class="empty-msg">
+  <div *ngIf="items.length === 0">
     <p>Your cart is empty.</p>
-    <a routerLink="/" class="btn-shop">Go Shopping</a>
+    <a routerLink="/" class="btn">Go Shopping</a>
   </div>
 
   <div *ngIf="items.length > 0">
-    <div class="cart-item" *ngFor="let item of items; let i = index">
-      <img [src]="item.image" [alt]="item.title" width="50">
+    <div *ngFor="let item of items; let i = index" class="cart-item">
       
-      <div class="item-details">
-        <h4>{{ item.title }}</h4>
+      <div class="item-info">
+        <h3>{{ item.title }}</h3>
         <p>{{ item.price | currency:'USD' }}</p>
       </div>
 
-      <button (click)="removeItem(i)" class="btn-remove">❌</button>
+      <button (click)="removeItem(i)" class="btn-remove">Remove ❌</button>
     </div>
 
     <hr>
-    
+
     <div class="total-section">
       <h3>Total: {{ total | currency:'USD' }}</h3>
       <button class="btn-checkout">Checkout</button>
     </div>
   </div>
+
 </div>

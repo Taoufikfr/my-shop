@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../product.service';
 import { Product } from '../product.model';
+import { CartService } from '../cart.service'; // 1. Import CartService
 
 @Component({
   selector: 'app-product-list',
@@ -13,6 +14,7 @@ import { Product } from '../product.model';
 })
 export class ProductList implements OnInit {
   private productService = inject(ProductService);
+  private cartService = inject(CartService); // 2. Inject it here
   
   products: Product[] = [];
   categories: string[] = [];
@@ -21,8 +23,9 @@ export class ProductList implements OnInit {
   selectedCategory: string = 'all';
 
   ngOnInit() {
-    this.loadCategories();
-    this.getAllProducts(); // Load all by default
+    this.productService.getProducts().subscribe(data => {
+      this.products = data;
+    });
   }
 
   loadCategories() {
@@ -43,5 +46,13 @@ export class ProductList implements OnInit {
     this.productService.getProductsByCategory(category).subscribe(data => {
       this.products = data;
     });
+  }
+
+  addToCart(product: Product) {
+    // Call the service
+    this.cartService.addToCart(product);
+    
+    // Visual feedback
+    alert(`${product.title} added to cart! \nTotal items: ${this.cartService.getItems().length}`);
   }
 }
