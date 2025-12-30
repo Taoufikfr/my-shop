@@ -1,1 +1,36 @@
-<p>product-list works!</p>
+<div class="container">
+  
+  <div class="category-bar">
+    <h3>Categories</h3>
+    <div class="category-buttons">
+      <button 
+        (click)="getAllProducts()" 
+        [class.active]="selectedCategory === 'all'">
+        All
+      </button>
+
+      <button *ngFor="let cat of categories" 
+              (click)="filterByCategory(cat)"
+              [class.active]="selectedCategory === cat">
+        {{ cat | titlecase }} 
+        </button>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="grid">
+    <div *ngFor="let p of products" class="card">
+      <a [routerLink]="['/product', p.id]">
+        <img [src]="p.image" [alt]="p.title">
+      </a>
+      
+      <div class="card-body">
+        <h4>{{ p.title }}</h4>
+        <p class="category-tag">{{ p.category }}</p> <p class="price">{{ p.price | currency:'USD' }}</p>
+        <button [routerLink]="['/product', p.id]" class="btn-view">View</button>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,26 @@
+.detail-container {
+  display: flex;
+  gap: 40px;
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.image-section img {
+  max-width: 300px;
+}
+.info-section {
+  flex: 1;
+}
+.price {
+  font-size: 24px;
+  color: #b12704;
+  font-weight: bold;
+}
+.btn-buy {
+  background-color: #ffd814;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 20px;
+  font-weight: bold;
+}

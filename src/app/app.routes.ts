@@ -1,11 +1,16 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component'; // Attention, voir note ci-dessous*
+import { ProductList } from './product-list/product-list';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
-import { ProductListComponent } from './product-list/product-list.component'; // ** Créons ce composant virtuel pour l'instant
+// 1. Import your new component
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component'; 
+import { Cart } from './cart/cart';
 
 export const routes: Routes = [
-  // On va déplacer la liste actuelle dans une route 'home'
-  // Pour l'instant, disons que AppComponent contient juste <router-outlet>
-  { path: '', loadComponent: () => import('./app.component').then(m => m.ProductListComponent) }, // Astuce rapide ou restructurez
-  { path: 'product/:id', component: ProductDetailComponent }
+  // Your existing routes
+  { path: '', component: ProductList },
+  { path: 'product/:id', component: ProductDetailComponent },
+  { path: 'cart', component: Cart },
+  
+  // 2. Add the Wildcard Route AT THE VERY END
+  { path: '**', component: PageNotFoundComponent }
 ];

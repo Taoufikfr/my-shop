@@ -1,8 +1,12 @@
 export interface Product {
   id: number;
-  title: string;
+  title: string;       // API uses 'title', not 'name'
   price: number;
-  category: string;
   description: string;
-  image: string;
+  category: string;
+  image: string;       // API uses 'image', not 'imageUrl'
+  rating?: {           // Optional: API provides rating info
+    rate: number;
+    count: number;
+  };
 }

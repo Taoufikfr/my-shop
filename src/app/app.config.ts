@@ -1,8 +1,13 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideHttpClient } from '@angular/common/http'; // <--- IMPORTER CECI
+import { provideRouter } from '@angular/router';
+import { routes } from './app.routes';
+// 1. Import provideHttpClient and withFetch
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient() // <--- AJOUTER CECI ICI
+    provideRouter(routes),
+    // 2. Add this line (or update it if it exists)
+    provideHttpClient(withFetch()) 
   ]
 };

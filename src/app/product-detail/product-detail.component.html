@@ -1,0 +1,21 @@
+<div *ngIf="product" class="detail-container">
+  
+  <div class="image-section">
+    <img [src]="product.image" [alt]="product.title">
+  </div>
+
+  <div class="info-section">
+    <h1>{{ product.title }}</h1>
+    <span class="category">{{ product.category }}</span>
+    <p class="price">{{ product.price | currency:'USD' }}</p>
+    
+    <p class="description">{{ product.description }}</p>
+
+    <button (click)="addToCart(product)" class="btn-buy">
+      Add to Cart
+    </button>
+  </div>
+
+</div>
+
+<div *ngIf="!product">Loading...</div>
