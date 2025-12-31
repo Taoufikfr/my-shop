@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../cart.service';
-import { Product } from '../product.model';
+import { CartItem } from '../cart-item.model';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -12,21 +12,35 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./cart.css']
 })
 export class Cart implements OnInit {
+  cartService = inject(CartService);
   
-  private cartService = inject(CartService);
-  
-  items: Product[] = [];
-  total: number = 0;
+  items: CartItem[] = [];
+  totalPrice: number = 0;
 
   ngOnInit() {
-    this.items = this.cartService.getItems();
-    this.total = this.cartService.getTotalPrice();
+    this.loadCart();
   }
 
-  removeItem(index: number) {
-    this.cartService.removeItem(index);
-    // Refresh the data
+  loadCart() {
     this.items = this.cartService.getItems();
-    this.total = this.cartService.getTotalPrice();
+    this.totalPrice = this.cartService.getTotalPrice();
+  }
+
+  // Increase Quantity
+  increment(item: CartItem) {
+    this.cartService.updateQuantity(item.product.id, item.quantity + 1);
+    this.loadCart(); // Refresh totals
+  }
+
+  // Decrease Quantity
+  decrement(item: CartItem) {
+    this.cartService.updateQuantity(item.product.id, item.quantity - 1);
+    this.loadCart(); // Refresh totals
+  }
+
+  // Remove Completely
+  remove(id: number) {
+    this.cartService.removeItem(id);
+    this.loadCart();
   }
 }

@@ -1,25 +1,14 @@
-<div class="container">
-  <header>
-  <div class="container header-content">
-    <a routerLink="/" style="text-decoration:none; color:inherit;"><h1>🛍️ Ma Boutique</h1></a>
-    <a routerLink="/cart" style="float: right; text-decoration: none; font-size: 1.2rem;">
-    🛒 Cart
-  </a>
+<nav class="navbar">
+  <a routerLink="/" class="logo">My Shop</a>
+  
+  <div class="nav-links">
+    <a routerLink="/">Home</a>
+    
+    <a routerLink="/cart" class="cart-link">
+      🛒 Cart 
+      <span *ngIf="cartCount > 0" class="badge">{{ cartCount }}</span>
+    </a>
   </div>
-</header>
+</nav>
+
 <router-outlet></router-outlet>
-  <div class="product-grid">
-    @for (product of products; track product.id) {
-      <div class="card">
-        <div class="image-container">
-          <img [src]="product.image" [alt]="product.title">
-        </div>
-        <div class="card-body">
-          <h3>{{ product.title }}</h3>
-          <p class="price">{{ product.price }} €</p>
-          <button class="btn" (click)="addToCart(product)">Ajouter au panier</button>
-        </div>
-      </div>
-    }
-  </div>
-</div>

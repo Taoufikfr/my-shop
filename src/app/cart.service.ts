@@ -1,42 +1,66 @@
-// src/app/cart.service.ts
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Product } from './product.model';
-import { BehaviorSubject } from 'rxjs'; // Optional: Use if you want to update header count automatically
+import { CartItem } from './cart-item.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  private items: Product[] = [];
+  private cartItems: CartItem[] = [];
+  
+  // This allows the Header to listen to changes automatically
+  private cartCount = new BehaviorSubject<number>(0);
+  cartCount$ = this.cartCount.asObservable();
 
-  // 1. Add item
+  // 1. ADD ITEM (With Quantity Logic)
   addToCart(product: Product) {
-    this.items.push(product);
-  }
+    // Check if item already exists
+    const existingItem = this.cartItems.find(item => item.product.id === product.id);
 
-  // 2. Get items
-  getItems() {
-    return this.items;
-  }
-
-  // 3. Remove item (NEW)
-  // We use the 'index' to know exactly which item to remove (in case you have 2 of the same item)
-  removeItem(index: number) {
-    if (index > -1 && index < this.items.length) {
-      this.items.splice(index, 1);
+    if (existingItem) {
+      // If yes, just increase quantity
+      existingItem.quantity++;
+    } else {
+      // If no, add new item with quantity 1
+      this.cartItems.push({ product: product, quantity: 1 });
     }
+    
+    this.updateCartCount();
   }
 
-  // 4. Get Total Price (NEW)
+  // 2. GET ITEMS
+  getItems() {
+    return this.cartItems;
+  }
+
+  // 3. REMOVE ITEM
+  removeItem(productId: number) {
+    this.cartItems = this.cartItems.filter(item => item.product.id !== productId);
+    this.updateCartCount();
+  }
+
+  // 4. UPDATE QUANTITY (+ / -)
+  updateQuantity(productId: number, quantity: number) {
+    const item = this.cartItems.find(i => i.product.id === productId);
+    if (item) {
+      item.quantity = quantity;
+      if (item.quantity <= 0) {
+        this.removeItem(productId); // Remove if 0
+      }
+    }
+    this.updateCartCount();
+  }
+
+  // 5. GET TOTAL PRICE
   getTotalPrice(): number {
-    // reduce loops through all items and adds up the price
-    return this.items.reduce((total, item) => total + item.price, 0);
+    return this.cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0);
   }
 
-  // 5. Clear Cart
-  clearCart() {
-    this.items = [];
-    return this.items;
+  // Helper to update the count observable
+  private updateCartCount() {
+    const totalCount = this.cartItems.reduce((count, item) => count + item.quantity, 0);
+    this.cartCount.next(totalCount);
   }
 }
